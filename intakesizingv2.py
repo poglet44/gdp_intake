@@ -36,6 +36,7 @@ Assumptions
 - Station-2 geometry is defined from Rt and Rh/Rt
 - Required geometry is derived assuming the same Rh/Rt as the reference geometry
 - Constant gamma = 1.4 and R = 287.05 J/kg/K
+- Upstream capture area and downstream station-2 required flow area are separate quantities and are reported separately.
 """
 
 from __future__ import annotations
@@ -83,6 +84,7 @@ class Inputs:
             "Required station-2 geometry is derived using the same Rh/Rt as the reference geometry.",
             "Perfect-gas model with constant gamma = 1.4 and R = 287.05 J/kg/K.",
             "No shock, recovery, throat, diffuser, distortion, or off-design modelling is included.",
+            "Upstream capture area and downstream station-2 required flow area are separate quantities and are reported separately.",
         ]
     )
 
@@ -364,12 +366,12 @@ def compute(inputs: Inputs) -> Results:
 
 
 def print_report(inputs: Inputs, results: Results) -> None:
-    print("=" * 94)
+    print("=" * 92)
     print("STATION-0 / STATION-2 CONSISTENCY CHECK")
-    print("=" * 94)
+    print("=" * 92)
 
     print("\nSTATION 0 (AMBIENT FREESTREAM)")
-    print("-" * 94)
+    print("-" * 92)
     print(f"Altitude (ISA):                  {inputs.altitude_ft:.1f} ft")
     print(f"M0:                              {inputs.M0:.4f}")
     print(f"T0:                              {fmt(results.T0_K, 4)} K")
@@ -379,7 +381,7 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"V0:                              {fmt(results.V0_m_s, 4)} m/s")
 
     print("\nCAPTURE AREA")
-    print("-" * 94)
+    print("-" * 92)
     print(f"mdot_capture:                    {inputs.mdot_capture_kg_s:.4f} kg/s")
     print(f"Ideal capture area:              {fmt(results.A_capture_ideal_m2, 4)} m^2")
     print(f"Working capture area:            {fmt(results.A_capture_working_m2, 4)} m^2")
@@ -387,7 +389,7 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"Working equiv. diameter:         {fmt(results.D_capture_equiv_working_m, 4)} m")
 
     print("\nSTATION 2 THERMO")
-    print("-" * 94)
+    print("-" * 92)
     print(f"mdot2:                           {inputs.mdot_2_kg_s:.4f} kg/s")
     print(f"Tt2:                             {inputs.Tt2_K:.4f} K")
     print(f"Pt2:                             {inputs.Pt2_kPa:.4f} kPa")
@@ -399,7 +401,7 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"Required flow area:              {fmt(results.A2_required_m2, 6)} m^2")
 
     print("\nREFERENCE STATION 2 GEOMETRY")
-    print("-" * 94)
+    print("-" * 92)
     print(f"Rt_ref:                          {inputs.Rt2_ref_m:.6f} m")
     print(f"Rh/Rt:                           {inputs.rh_over_rt:.6f}")
     print(f"Rh_ref:                          {fmt(results.Rh2_ref_m, 6)} m")
@@ -408,7 +410,7 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"Annulus area ref:                {fmt(results.A2_annulus_ref_m2, 6)} m^2")
 
     print("\nREQUIRED STATION 2 GEOMETRY (DESIGN BASIS)")
-    print("-" * 94)
+    print("-" * 92)
     print(f"Rt_req:                          {fmt(results.Rt2_req_m, 6)} m")
     print(f"Rh_req:                          {fmt(results.Rh2_req_m, 6)} m")
     print(f"D2_req:                          {fmt(results.D2_req_m, 6)} m")
@@ -416,7 +418,7 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"Annulus area req:                {fmt(results.A2_annulus_req_m2, 6)} m^2")
 
     print("\nREFERENCE VS REQUIRED COMPARISON")
-    print("-" * 94)
+    print("-" * 92)
     print(f"Required - reference annulus:    {fmt(results.annulus_area_mismatch_ref_m2, 6)} m^2")
     print(f"Annulus mismatch percent:        {fmt(results.annulus_area_mismatch_ref_percent, 4)} %")
     print(f"Rt_req - Rt_ref:                 {fmt(results.Rt_mismatch_m, 6)} m")
@@ -424,34 +426,45 @@ def print_report(inputs: Inputs, results: Results) -> None:
     print(f"D2_req - D2_ref:                 {fmt(results.D2_mismatch_m, 6)} m")
 
     print("\nAREA RATIOS USING REQUIRED GEOMETRY")
-    print("-" * 94)
+    print("-" * 92)
     print(f"Capture / annulus req (ideal):   {fmt(results.capture_to_annulus_req_ideal, 4)}")
     print(f"Capture / annulus req (working): {fmt(results.capture_to_annulus_req_working, 4)}")
 
     print("\nEXAMPLE 2D CAPTURE OPENINGS")
-    print("-" * 94)
+    print("-" * 92)
     print(f"{'Width (m)':>12} {'Ideal h (m)':>18} {'Working h (m)':>18}")
     for w, hi, hw in results.capture_examples:
         print(f"{w:12.4f} {fmt(hi, 4):>18} {fmt(hw, 4):>18}")
 
     print("\nTOTAL AIRCRAFT CAPTURE AREA")
-    print("-" * 94)
+    print("-" * 92)
     total_ideal = None if results.A_capture_ideal_m2 is None else results.A_capture_ideal_m2 * inputs.engines_total
     total_working = None if results.A_capture_working_m2 is None else results.A_capture_working_m2 * inputs.engines_total
     print(f"Total ideal capture area:        {fmt(total_ideal, 4)} m^2")
     print(f"Total working capture area:      {fmt(total_working, 4)} m^2")
 
+    print("\nDESIGN ENDPOINT SUMMARY")
+    print("-" * 92)
+    print(f"Upstream ideal capture area:     {fmt(results.A_capture_ideal_m2, 6)} m^2")
+    print(f"Upstream working capture area:   {fmt(results.A_capture_working_m2, 6)} m^2")
+    print(f"Downstream required S2 area:     {fmt(results.A2_required_m2, 6)} m^2")
+    print(f"Downstream required Rt:          {fmt(results.Rt2_req_m, 6)} m")
+    print(f"Downstream required Rh:          {fmt(results.Rh2_req_m, 6)} m")
+    print(f"Downstream required D2:          {fmt(results.D2_req_m, 6)} m")
+    print(f"Downstream required gross area:  {fmt(results.A2_gross_req_m2, 6)} m^2")
+    print(f"Downstream required annulus:     {fmt(results.A2_annulus_req_m2, 6)} m^2")
+
     if results.warnings:
         print("\nWARNINGS")
-        print("-" * 94)
+        print("-" * 92)
         for i, w in enumerate(results.warnings, start=1):
             print(f"{i:2d}. {w}")
 
-    print("=" * 94)
+    print("=" * 92)
 
 
-def main() -> None:
-    inputs = Inputs(
+def default_inputs() -> Inputs:
+    return Inputs(
         altitude_ft=60000.0,
         M0=1.8,
         mdot_capture_kg_s=159.19,
@@ -466,8 +479,11 @@ def main() -> None:
         example_widths_m=[2.0, 2.2, 2.4, 2.5],
     )
 
+def main() -> None:
+    inputs = default_inputs()
     results = compute(inputs)
     print_report(inputs, results)
+
 
 
 if __name__ == "__main__":
