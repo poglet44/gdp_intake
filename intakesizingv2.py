@@ -58,11 +58,11 @@ class Inputs:
     mdot_2_kg_s: float = 159.19
     Tt2_K: float = 357.049
     Pt2_kPa: float = 39.169
-    M2: float = 0.748
+    M2: float = 0.751
 
     # Station 2: reference geometry
-    Rt2_ref_m: float = 0.749777569
-    rh_over_rt: float = 0.45
+    Rt2_ref_m: float = 0.840332733
+    rh_over_rt: float = 0.3
 
     # Practical capture sizing
     capture_area_margin_fraction: float = 0.08
@@ -465,18 +465,6 @@ def print_report(inputs: Inputs, results: Results) -> None:
 
 def default_inputs() -> Inputs:
     return Inputs(
-        altitude_ft=60000.0,
-        M0=1.8,
-        mdot_capture_kg_s=159.19,
-        engines_total=4,
-        mdot_2_kg_s=159.19,
-        Tt2_K=357.049,
-        Pt2_kPa=39.169,
-        M2=0.748,
-        Rt2_ref_m=0.749777569,
-        rh_over_rt=0.45,
-        capture_area_margin_fraction=0.08,
-        example_widths_m=[2.0, 2.2, 2.4, 2.5],
     )
 
 def main() -> None:

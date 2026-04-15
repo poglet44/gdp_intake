@@ -1,0 +1,10 @@
+__pycache__/*
+*.pyc
+venv/
+.env
+build/
+dist/
+.vscode/
+.pyc
+.cpython-314
+__pycache__/intakesizingv2.cpython-314.pyc
