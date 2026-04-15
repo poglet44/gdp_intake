@@ -51,7 +51,7 @@ class NSTHSDInputs:
     New design factors for NS -> TH -> SD.
     """
     MTH_target: float = 0.8
-    ASD_over_ATH: float = 1.08
+    ASD_over_ATH: float = 1.02
     theta_NS_to_TH_deg: float = 4.0
     theta_TH_to_SD_deg: float = 3.0
 
