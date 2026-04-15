@@ -62,7 +62,7 @@ class ExternalDiffuserInputs:
     """
     New user-controlled inputs for the external supersonic diffuser only.
     """
-    capture_width_m: float = 2.4
+    capture_width_m: float = 1.85
     MEX_target: float = 1.3
     use_working_capture_area: bool = True
 

@@ -69,7 +69,7 @@ class Inputs:
 
     # Example 2D capture widths
     example_widths_m: List[float] = field(
-        default_factory=lambda: [2.0, 2.2, 2.4, 2.5]
+        default_factory=lambda: [1.7, 1.8, 1.85, 1.9, 2.0, 2.2, 2.4, 2.5]
     )
 
     assumptions: List[str] = field(
